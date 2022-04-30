@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+    // for creating fat jars (with all jar dependencies inside
+    //https://imperceptiblethoughts.com/shadow/introduction/#benefits-of-shadow
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+
+    //if you set here compileOnly instead, this will result in the java.lang.NoClassDefFoundError since the lib jar wont be included to the final jar
+    //EVEN when using the shadowJar (fat jar)
+    implementation 'org.example:my-lib-artifact-id:1.0-SNAPSHOT'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+// this will result in the error that classes from the lib could not be found!!!
+//jar {
+//    manifest {
+//        attributes 'Main-Class': 'SomeConsumer'
+//    }
+//}
+
+
+
+final resourcesDir = file("$rootDir/application/build/readyJar")
+
+
+//import org.gradle.crypto.checksum.Checksum
+//
+//task createChecksums(type: Checksum, dependsOn: jar){
+//    inputFiles.setFrom("$projectDir/build/libs")
+//    outputDirectory = resourcesDir
+//    checksumAlgorithm = Checksum.Algorithm.SHA512
+//    appendFileNameToChecksum.set(true)
+//}
+
+//this will do the job:
+tasks.jar {
+    dependsOn(shadowJar)
+}
+
+//but we still need to configure the manifest and it is recommended to inherit from some JAR task:
+task testJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'SomeConsumer'
+    }
+}
+
+shadowJar {
+    destinationDirectory = resourcesDir
+    manifest {
+        inheritFrom project.tasks.testJar.manifest
+    }
+//    dependsOn(createChecksums)
+}

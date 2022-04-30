@@ -1,0 +1,36 @@
+plugins {
+    id 'java-library' //its important to change the java plugin to java-library
+    //and now you will be able to get ready jar after running the `build` task
+
+    id 'maven-publish' // for publishing
+
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    api "com.amazonaws:aws-java-sdk-core:1.12.205"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+//you can configure the remote repository to publish: https://www.jetbrains.com/help/idea/add-a-gradle-library-to-the-maven-repository.html#publish_remote

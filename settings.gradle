@@ -1,0 +1,4 @@
+rootProject.name = 'GradleLibTransitiveDependencies'
+include 'library'
+include 'application'
+
