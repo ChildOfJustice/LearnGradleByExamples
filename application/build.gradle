@@ -14,14 +14,22 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    awsLibs
+}
+
 dependencies {
 
     //if you set here compileOnly instead, this will result in the java.lang.NoClassDefFoundError since the lib jar wont be included to the final jar
     //EVEN when using the shadowJar (fat jar)
-    implementation 'org.example:my-lib-artifact-id:1.0-SNAPSHOT'
+    awsLibs 'org.example:my-lib-artifact-id:1.0-SNAPSHOT'
+
+    awsLibs "com.amazonaws:aws-java-sdk-core:1.11.997"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    configurations.implementation.extendsFrom(configurations.awsLibs)
 }
 
 test {
@@ -41,6 +49,7 @@ test {
 final resourcesDir = file("$rootDir/application/build/readyJar")
 
 
+//example of creating a new task
 //import org.gradle.crypto.checksum.Checksum
 //
 //task createChecksums(type: Checksum, dependsOn: jar){
@@ -67,5 +76,6 @@ shadowJar {
     manifest {
         inheritFrom project.tasks.testJar.manifest
     }
+    //can depend on your own task
 //    dependsOn(createChecksums)
 }
