@@ -17,6 +17,7 @@ dependencies {
 
     compileOnly "com.amazonaws:aws-java-sdk-core:1.12.205"
     //api -> compile time, runtime as well for the consumer (available at the compile, runtime of the application module code)
+    //if you change "compileOnly" to "api" this will result in the 1.12.205 version of aws core sdk to be included in the final app jar
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
