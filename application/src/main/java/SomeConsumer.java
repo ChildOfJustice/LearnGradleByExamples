@@ -20,5 +20,10 @@ public class SomeConsumer {
             }
         };
         System.out.println("Creds provider from the core: " + someCredsprovider.getCredentials());
+
+
+        //if you pass "core" -> this wont call any code that accesses not provided sdk
+        //but if you pass "cloudfront" -> this will result in the java.lang.NoClassDefFoundError: com/amazonaws/services/cloudfront/AmazonCloudFrontClientBuilder error
+        manager.testUnusedDependencies("core");
     }
 }

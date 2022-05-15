@@ -19,6 +19,9 @@ dependencies {
     //api -> compile time, runtime as well for the consumer (available at the compile, runtime of the application module code)
     //if you change "compileOnly" to "api" this will result in the 1.12.205 version of aws core sdk to be included in the final app jar
 
+    //will not be provided to a consumer, but we need this to compile our library
+    compileOnly "com.amazonaws:aws-java-sdk-cloudfront:1.12.205"
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
