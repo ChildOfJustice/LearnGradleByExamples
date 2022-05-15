@@ -24,6 +24,8 @@ dependencies {
     //EVEN when using the shadowJar (fat jar)
     awsLibs 'org.example:my-lib-artifact-id:1.0-SNAPSHOT'
 
+    //if the scope of the aws-core dependency in the library project is "compileOnly"
+    //and here you will comment this ine -> you will get a compilation error when building the project that there is no aws-core sdk
     awsLibs "com.amazonaws:aws-java-sdk-core:1.11.997"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
